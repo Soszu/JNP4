@@ -39,7 +39,7 @@ int main() {
   assert(s2 > s3);
   assert(s1 != s4);
   assert(s1 == s1);
-/*
+
   assert(typeid(add_comp<Accountancy, Exchange_office>::type) == typeid(small_company));
   assert(typeid(remove_comp<small_company, Accountancy>::type) == typeid(Exchange_office));
   assert(typeid(split_comp<small_company, 2>::type) == typeid(Company<0, 0, 0>));
@@ -60,6 +60,5 @@ int main() {
          typeid(add_comp<multiply_comp<Hunting_shop, 3>::type, Exchange_office>::type));
 
   assert(solve_auction(s1, s2, s5) == false);
-  */
   return 0;
 }
