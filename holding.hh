@@ -1,3 +1,9 @@
+/*
+ *JNP, zadanie 4
+ *Rafał Soszyński i Krzysztof Stopczański
+ *rs335786+ks335802
+ */
+
 #include <iostream>
 
 typedef unsigned int Quantity;
