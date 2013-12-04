@@ -74,13 +74,37 @@ std::ostream& operator<<(std::ostream &out, const Group <C> &group) {
 
 // co do tych funkcji to nie jestem pewien, jak maja dzialac, ale chyba "funkcyjnie", czyli tworza nowa grupe z nowym typem i wartosciami z s1
 template<class C>
-Group<typename additive_expand_comp<C>::type> const additive_expand_group(Group<C> const &s1);
+Group<typename additive_expand_comp<C>::type> const additive_expand_group(Group<C> const &s1) {
+	Group<typename additive_expand_comp<C>::type> result(s1.size);
+	result.acc_val = s1.acc_val;
+	result.hs_val = s1.hs_val;
+	result.exo_val = s1.exo_val;
+}
+
 template<class C>
-Group<typename multiply_comp<C, 10>::type> const multiplicative_expand_group(Group<C> const &s1);
+Group<typename multiply_comp<C, 10>::type> const multiplicative_expand_group(Group<C> const &s1) {
+	Group<typename multiply_comp<C, 10>::type> result(s1.size);
+	result.acc_val = s1.acc_val;
+	result.hs_val = s1.hs_val;
+	result.exo_val = s1.exo_val;
+}
+
 template<class C>
-Group<typename additive_rollup_comp<C>::type> const additive_rollup_group(Group<C> const &s1);
+Group<typename additive_rollup_comp<C>::type> const additive_rollup_group(Group<C> const &s1) {
+	Group<typename additive_rollup_comp<C>::type> result(s1.size);
+	result.acc_val = s1.acc_val;
+	result.hs_val = s1.hs_val;
+	result.exo_val = s1.exo_val;
+}
+
 template<class C>
-Group<typename split_comp<C, 10>::type> const multiplicative_rollup_group(Group<C> const &s1);
+Group<typename split_comp<C, 10>::type> const multiplicative_rollup_group(Group<C> const &s1) {
+	Group<typename split_comp<C, 10>::type> result(s1.size);
+	result.acc_val = s1.acc_val;
+	result.hs_val = s1.hs_val;
+	result.exo_val = s1.exo_val;
+}
+
 template<class C1, class C2, class C3>
 bool solve_auction(Group<C1> const &g1, Group<C2> const &g2, Group<C3> const &g3);
 
@@ -112,10 +136,11 @@ private:
 	return (denominator == 0 ? 0 : nominator / denominator);
 	}
 public:
-	friend std::ostream& operator<<(std::ostream &out, const Group <C> &group);
-	/*
-	 szczerze nie wiem jak to zafriendowac, to sypie bledami kompilacji, masz jakis pomysl?
-	 Group<typename additive_expand_comp<Company>::type> <> const additive_expand_group(Group<Company> const &s1);*/
+	friend std::ostream& operator<< <> (std::ostream &out, const Group <C> &group);
+	friend Group<typename additive_expand_comp<C>::type> const additive_expand_group <> (Group<C> const &s1);
+	friend Group<typename multiply_comp<C, 10>::type> const multiplicative_expand_group <> (Group<C> const &s1);
+	friend Group<typename additive_rollup_comp<C>::type> const additive_rollup_group <> (Group<C> const &s1);
+	friend Group<typename split_comp<C, 10>::type> const multiplicative_rollup_group <> (Group<C> const &s1);
 
 	typedef C company_type;
 	static constexpr company_type company = C(); //jak to ma działać? A raczej - jak to obsługiwać
