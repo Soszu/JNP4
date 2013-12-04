@@ -72,7 +72,6 @@ std::ostream& operator<<(std::ostream &out, const Group <C> &group) {
 	return out;
 }
 
-// co do tych funkcji to nie jestem pewien, jak maja dzialac, ale chyba "funkcyjnie", czyli tworza nowa grupe z nowym typem i wartosciami z s1
 template<class C>
 Group<typename additive_expand_comp<C>::type> const additive_expand_group(Group<C> const &s1) {
 	Group<typename additive_expand_comp<C>::type> result(s1.get_size());
@@ -132,8 +131,6 @@ private:
 		Quantity denominator = lhs_qty + rhs_qty;
 		return (denominator == 0 ? 0 : nominator / denominator);
 	}
-	//Quantity jest unsigned więc nie widać kiedy jest < 0, stąd trochę nieprzyjemny format poniższej metody.
-	//można by dodać funkcję safeSubstract czy coś.
 	Quantity weightedMeanSub(Quantity lhs_value, Quantity lhs_qty, Quantity rhs_value, Quantity rhs_qty) {
 		Quantity nominator = 0;
 		if (lhs_qty * lhs_value > rhs_qty * rhs_value)
@@ -148,7 +145,7 @@ public:
 	friend std::ostream& operator<< <> (std::ostream &out, const Group <C> &group);
 
 	typedef C company_type;
-	static constexpr company_type company = C(); //jak to ma działać? A raczej - jak to obsługiwać
+	static constexpr company_type company = C();
 
 	Group() : size(1), acc_val(15), hs_val(150), exo_val(50) {}
 	Group(Quantity k) : Group{} {size = k;}
@@ -179,7 +176,7 @@ public:
 	}
 
 	unsigned int get_value() const {
-		return C::acc_ * acc_val + C::hs_ * hs_val + C::exo_ * exo_val;
+		return size *(C::acc_ * acc_val + C::hs_ * hs_val + C::exo_ * exo_val);
 	}
 
 	Group <C> operator+(Group <C> group) const {
@@ -201,7 +198,7 @@ public:
 		acc_val = weightedMeanSub(acc_val, C::acc_ * size, group.get_acc_val(), C::acc_ * group.get_size());
 		hs_val = weightedMeanSub(hs_val, C::hs_ * size, group.get_hs_val(), C::hs_ * group.get_size());
 		exo_val = weightedMeanSub(exo_val, C::exo_ * size, group.get_exo_val(), C::exo_ * group.get_size());
-		size > group.get_size() ? size - group.get_size() : 0;
+		size = size > group.get_size() ? size - group.get_size() : 0;
 		return *this;
 	}
 
@@ -220,11 +217,11 @@ public:
 	}
 	Group <C> operator*(unsigned int n) const {
 		Group <C> result(*this);
-		return (result*= n); //tutaj jeszcze wywala błąd, bo result jest zdaje się const (czy coś w tym stylu / chociaż sam nie wiem)
+		return (result*= n);
 	}
 	Group <C> operator/(unsigned int n) const {
 		Group <C> result(*this);
-		return (result/= n); //to samo co wyżej
+		return (result/= n);
 	}
 
 	template<class C_other>
