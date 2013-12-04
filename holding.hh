@@ -61,7 +61,7 @@ class Group;
 
 template <class C >
 std::ostream& operator<<(std::ostream &out, const Group <C> &group) {
-	out << "Number of companies: " << group.get_size() << ", "
+	out << "Number of companies: " << group.get_size() << "; "
 	    << "Value: " << group.get_value() <<"\n"
 	    << "Accountancies value: " << group.get_acc_val() << ", "
 	    << "Hunting shops value: " << group.get_hs_val() << ", "
@@ -204,11 +204,10 @@ public:
 
 	Group <C> & operator*=(unsigned int n) {
 		size*= n;
-		n == 0 ? acc_val = 0 : acc_val/= n;
 		for (auto i : {&acc_val, &hs_val, &exo_val})
 			n == 0 ? (*i) = 0 : (*i)/= n;
 		return *this;
-		}
+	}
 	Group <C> & operator/=(unsigned int n) {
 		n == 0 ? size = 0 : size/= n;
 		for (auto i : {&acc_val, &hs_val, &exo_val})
