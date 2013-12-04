@@ -106,7 +106,13 @@ Group<typename split_comp<C, 10>::type> const multiplicative_rollup_group(Group<
 }
 
 template<class C1, class C2, class C3>
-bool solve_auction(Group<C1> const &g1, Group<C2> const &g2, Group<C3> const &g3);
+bool solve_auction(Group<C1> const &g1, Group<C2> const &g2, Group<C3> const &g3)
+{
+	return
+	(g1 > g2 && g1 > g3) ||
+	(g2 > g1 && g2 > g3) ||
+	(g3 > g1 && g3 > g2);
+}
 
 
 template<class C> class Group
