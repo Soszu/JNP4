@@ -182,29 +182,31 @@ public:
                 return (result/= n); //to samo co wyżej
         }
 
-        //w kilku przypadkach poniżej można by użyć już zdefiniowanyhc metod (np. != jako ! ==), ale chyba nie wychodzi specjalnie lepiej
         template<class C_other>
 	bool operator==(Group <C_other> group) const {
-                return (C::hs_ * size == C_other::hs_ * group.get_size());
+                return (C::hs_ * size == C_other::hs_ * group.get_size()
+			&& C::exo_ * size == C_other::exo_ * group.get_size());
 	}
 	template<class C_other>
 	bool operator!=(Group <C_other> group) const {
-                return (C::hs_ * size != C_other::hs_ * group.get_size());
+                return !(*this == group);
 	}
 	template<class C_other>
 	bool operator<(Group <C_other> group) const {
-                return (C::hs_ * size < C_other::hs_ * group.get_size());
+                return (C::hs_ * size < C_other::hs_ * group.get_size()
+                        && C::exo_ * size < C_other::exo_ * group.get_size());
 	}
 	template<class C_other>
 	bool operator>(Group <C_other> group) const {
-                return (C::hs_ * size > C_other::hs_ * group.get_size());
+                return (C::hs_ * size > C_other::hs_ * group.get_size()
+                        && C::exo_ * size > C_other::exo_ * group.get_size());
 	}
 	template<class C_other>
 	bool operator<=(Group <C_other> group) const{
-                return (C::hs_ * size <= C_other::hs_ * group.get_size());
+                return (*this < group || *this == group);
 	}
 	template<class C_other>
 	bool operator>=(Group <C_other> group) const{
-                return (C::hs_ * size >= C_other::hs_ * group.get_size());
+                return (*this > group || *this == group);
 	}
 };
