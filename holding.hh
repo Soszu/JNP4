@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <typeinfo>
 
 typedef unsigned int Quantity;
 
@@ -231,8 +232,11 @@ public:
 
 	template<class C_other>
 	bool operator==(Group <C_other> group) const {
-		return (C::hs_ * size == C_other::hs_ * group.get_size()
-			&& C::exo_ * size == C_other::exo_ * group.get_size());
+		if (typeid(C_other) == typeid(C))
+			return (size == group.get_size());
+		else
+			return (C::hs_ * size == C_other::hs_ * group.get_size()
+			        && C::exo_ * size == C_other::exo_ * group.get_size());
 	}
 	template<class C_other>
 	bool operator!=(Group <C_other> group) const {
@@ -240,20 +244,26 @@ public:
 	}
 	template<class C_other>
 	bool operator<(Group <C_other> group) const {
-		return (C::hs_ * size < C_other::hs_ * group.get_size()
-		        && C::exo_ * size < C_other::exo_ * group.get_size());
+		return (*this <= group && *this != group);
 	}
 	template<class C_other>
 	bool operator>(Group <C_other> group) const {
-		return (C::hs_ * size > C_other::hs_ * group.get_size()
-		        && C::exo_ * size > C_other::exo_ * group.get_size());
+		return (*this >= group && *this != group);
 	}
 	template<class C_other>
 	bool operator<=(Group <C_other> group) const{
-		return (*this < group || *this == group);
+		if (typeid(C_other) == typeid(C))
+			return (size <= group.get_size());
+		else
+			return (C::hs_ * size <= C_other::hs_ * group.get_size()
+			        && C::exo_ * size <= C_other::exo_ * group.get_size());
 	}
 	template<class C_other>
 	bool operator>=(Group <C_other> group) const{
-		return (*this > group || *this == group);
+		if (typeid(C_other) == typeid(C))
+			return (size >= group.get_size());
+		else
+			return (C::hs_ * size >= C_other::hs_ * group.get_size()
+			        && C::exo_ * size >= C_other::exo_ * group.get_size());
 	}
 };
